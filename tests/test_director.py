@@ -96,14 +96,16 @@ class ActionRunnerTests(unittest.TestCase):
         from director import ActionRunner
 
         self.arunner = ActionRunner(['self', 'simpleaction',
-                                     'verb', '--opt=value'], 'tests.actions')
+                                     'verb', '--opt=value', '--another'],
+                                    'tests.actions')
 
     def test_parse_options(self):
         """
         Make sure the parsing of options works.
         """
-        res = self.arunner.parse_options(['--opt=value'])
-        self.assertEqual(res, {'opt': 'value'})
+        res = self.arunner.parse_options()
+        self.assertEqual(res, {'opt': 'value',
+                               'another': False})
 
     def test_run_code(self):
         """

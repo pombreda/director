@@ -19,7 +19,7 @@ class Simpleaction(director.Action):
     Very simple action for use in testing.
     """
 
-    def verb(self, opt):
+    def verb(self, opt, another=False):
         """
         An example verb.
 

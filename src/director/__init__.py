@@ -14,6 +14,9 @@ Main classes for director.
 import os
 import sys
 import types
+import inspect
+from optparse import OptionParser
+
 
 __version__ = '1.1.0'
 __license__ = 'GPLv3+'
@@ -158,23 +161,20 @@ class ActionRunner(object):
         @type plugin_package: str
         """
         self.plugin_package = plugin_package
+        self.args = args
 
-        if not len(args[1:]) >= 2:
+        if not len(self.args[1:]) >= 2:
             self.__list_nouns()
             print >> sys.stderr, "Please give at least a noun and a verb."
             sys.exit(1)
         # Get all the options passed in
         self.noun, self.verb = args[1:3]
-        self.options = self.parse_options(args[3:])
 
         # Generate the code based from the input
-        action = __import__("%s.%s" % (self.plugin_package, self.noun))
-        for drop_x in range(self.plugin_package.count('.')):
-            drop_x += 1
-            actions = action.__getattribute__(
-                self.plugin_package.split('.')[drop_x])
-        module = actions.__getattribute__(self.noun)
-        self.action_to_run = module.__getattribute__(self.noun.capitalize())()
+        action = __import__("%s.%s" % (self.plugin_package, self.noun),
+                            fromlist=[self.noun])
+        self.action_to_run = action.__getattribute__(self.noun.capitalize())()
+        self.options = self.parse_options()
 
     def __list_nouns(self):
         """
@@ -191,26 +191,45 @@ class ActionRunner(object):
                 print >> sys.stderr, "%s " % noun.replace('.py', ''),
         print >> sys.stderr, ""
 
-    def parse_options(self, options):
+    def parse_options(self):
         """
         Parse the options into something that can be passed to a method.
-
-        @param options: The options passed in
-        @type options: list
 
         @return: A usable dictionary to pass to a method
         @rtype: dict
         """
-        method_dict = {}
-        for option in options:
-            if option.count('=') > 0:
-                key, value = option.split('=')
-            else:
-                key = option
-                value = True
-            key = key.replace('--', '').replace('-', '_')
-            method_dict[key] = value
-        return method_dict
+        parser = OptionParser()
+        a_verb = self.action_to_run.__getattribute__(self.verb)
+        inspection_data = inspect.getargspec(a_verb)
+
+        iargs = inspection_data[0][1:]
+        iargs_defaults = inspection_data[2:]
+
+        defaults = {}
+        for iarg_x in range(len(iargs)):
+            # Make sure we set up defaults
+            def_item = iargs_defaults[iarg_x]
+            if type(def_item) == types.TupleType:
+                def_item = def_item[0]
+            defaults[iargs[iarg_x]] = def_item
+
+            # Setup the action
+            action = 'store'
+            if defaults[iargs[iarg_x]] == True:
+                action = 'store_true'
+            elif defaults[iargs[iarg_x]] == False:
+                action = 'store_false'
+            # Add it to optparse
+            parser.add_option("--%s" % iargs[iarg_x],
+                              dest=iargs[iarg_x],
+                              action=action)
+
+        # Bind the defaults
+        parser.set_defaults(**defaults)
+        options, largs = parser.parse_args(self.args[3:])
+        # TODO: Hack to make options into a dictionary
+        exec("options = %s" % options)
+        return options
 
     def run_code(self):
         """
