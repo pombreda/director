@@ -3,5 +3,5 @@ include LICENSE
 include INSTALL
 include MANIFEST.in
 include COPYING
-recursive-include tests *.py
 include python-director.spec
+recursive-include tests *.py

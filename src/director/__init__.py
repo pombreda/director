@@ -138,7 +138,8 @@ class Action(object):
         Do not override. See description_txt
         """
         verbs = ", ".join(self._list_verbs())
-        print >> sys.stderr, "%s. Available verbs: %s" % (self.description_txt, verbs)
+        print >> sys.stderr, "%s. Available verbs: %s" % (
+                                      self.description_txt, verbs)
 
 
 class ActionRunner(object):

@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           python-director
-Version:        1.1.0
+Version:        1.0.2
 Release:        1%{?dist}
 Summary:        Command line input plugin system
 
@@ -45,9 +45,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Fri Sep 15 2008 Steve 'Ashcrow' Milner <smilner@redhat.com> - 1.1.0-1
-- Updated for upstream 1.1.0
-
 * Fri Aug  1 2008 Steve 'Ashcrow' Milner <smilner@redhat.com> - 1.0.2-1
 - Updated for upstream 1.0.2
 
