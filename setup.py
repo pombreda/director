@@ -116,15 +116,22 @@ class TestCommand(Command):
 setup(name = "director",
     version = __version__,
     description = "Command line plugin library",
+    long_description = """\
+director is a python library that allows developers to create command line \
+plugins for tools making it easy to add new functionality.
+""",
     author = 'Steve Milner',
-    author_email = 'smilner@redhat.com',
+    author_email = 'smilner+director@redhat.com',
+    url = "https://fedorahosted.org/director/",
+    download_url = "https://fedorahosted.org/releases/d/i/director/",
+    platforms = ['any'],
 
     license = __license__,
 
     package_dir = {'director': 'src/director'},
     packages = ['director'],
 
-    classifiers=[
+    classifiers = [
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Development Status :: 5 - Production/Stable',
         'Topic :: Software Development :: Libraries :: Python Modules',
