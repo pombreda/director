@@ -125,9 +125,9 @@ setup(name = "director",
     packages = ['director'],
 
     classifiers=[
-        'License :: OSI Approved ::  GNU General Public License (GPL)',
+        'License :: OSI Approved :: GNU General Public License (GPL)',
         'Development Status :: 5 - Production/Stable',
-        'Topic :: Software Development :: Libraries :: Python Modules'
+        'Topic :: Software Development :: Libraries :: Python Modules',
         'Programming Language :: Python'],
 
     cmdclass = {'test': TestCommand,
