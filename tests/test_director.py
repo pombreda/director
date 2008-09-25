@@ -105,7 +105,8 @@ class ActionRunnerTests(unittest.TestCase):
         """
         res = self.arunner.parse_options()
         self.assertEqual(res, {'opt': 'value',
-                               'another': False})
+                               'another': False,
+                               'last': 'last'})
 
     def test_run_code(self):
         """

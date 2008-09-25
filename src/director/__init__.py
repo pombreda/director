@@ -202,25 +202,35 @@ class ActionRunner(object):
         """
         parser = OptionParser()
         a_verb = self.action_to_run.__getattribute__(self.verb)
-        inspection_data = inspect.getargspec(a_verb)
+        inspection_data = [x for x in inspect.getargspec(a_verb)]
 
-        iargs = inspection_data[0][1:]
-        iargs_defaults = inspection_data[2:]
+        if inspection_data[0] == None:
+            inspection_data[0] = []
+        iargs = [x for x in reversed(inspection_data[0][1:])]
+        if inspection_data[3] == None:
+            inspection_data[3] = []
+        iargs_defaults = [x for x in reversed(inspection_data[3])]
 
         defaults = {}
         for iarg_x in range(len(iargs)):
-            # Make sure we set up defaults
-            def_item = iargs_defaults[iarg_x]
-            if type(def_item) == types.TupleType:
-                def_item = def_item[0]
-            defaults[iargs[iarg_x]] = def_item
-
-            # Setup the action
+            # Default action is to store
             action = 'store'
-            if defaults[iargs[iarg_x]] == True:
-                action = 'store_true'
-            elif defaults[iargs[iarg_x]] == False:
-                action = 'store_false'
+            try:
+                # Make sure we set up defaults
+                def_item = iargs_defaults[iarg_x]
+                if type(def_item) == types.TupleType:
+                    def_item = def_item[0]
+                defaults[iargs[iarg_x]] = def_item
+
+                # Setup the action if it is a bool
+                if defaults[iargs[iarg_x]] == True:
+                    action = 'store_true'
+                elif defaults[iargs[iarg_x]] == False:
+                    action = 'store_false'
+            except IndexError, ie:
+                # Not everything has a default
+                pass
+
             # Add it to optparse
             parser.add_option("--%s" % iargs[iarg_x],
                               dest=iargs[iarg_x],
