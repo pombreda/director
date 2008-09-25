@@ -172,7 +172,9 @@ class ActionRunner(object):
 
         # Generate the code based from the input
         action = __import__("%s.%s" % (self.plugin_package, self.noun),
-                            fromlist=[self.noun])
+                            globals(),
+                            locals(),
+                            [self.noun])
         self.action_to_run = action.__getattribute__(self.noun.capitalize())()
         self.options = self.parse_options()
 
