@@ -20,19 +20,22 @@ from distutils.core import Command, setup
 from unittest import TextTestRunner, TestLoader
 from os.path import basename, walk, splitext
 from os.path import join as pjoin
+from os import path
+
 
 sys.path.insert(0, 'src')
 sys.path.insert(1, 'tests')
 
-from director import __version__
-from director import __license__
+from director import __version__, __license__, __author__
 
 
-class DocCommand(Command):
+class SphinxCommand(Command):
     """
-    Documentation generation command.
+    Creates HTML documentation using Sphinx.
     """
+
     user_options = []
+    description = "Generate documentation via sphinx"
 
     def initialize_options(self):
         """
@@ -48,33 +51,37 @@ class DocCommand(Command):
 
     def run(self):
         """
-        Creates HTML documentation using epydoc.
+        Run the DocCommand.
         """
         print "Creating html documentation ..."
 
         try:
-            from epydoc.docbuilder import build_doc_index
-            from epydoc.docwriter.html import HTMLWriter
+            from sphinx.application import Sphinx
 
-            docidx = build_doc_index([os.path.join('src', 'director/')])
-            html_writer = HTMLWriter(docidx,
-                                     prj_name = 'director',
-                                     prj_url = '')
-            html_writer.write(os.path.join('docs'))
-        except:
+            if not os.access(path.join('docs', 'html'), os.F_OK):
+                os.mkdir(path.join('docs', 'html'))
+            buildername = 'html'
+            outdir = path.abspath(path.join('docs', 'html'))
+            doctreedir = os.path.join(outdir, '.doctrees')
+
+            confdir = path.abspath('docs')
+            srcdir = path.abspath('docs')
+            freshenv = False
+
+            # Create the builder
+            app = Sphinx(srcdir, confdir, outdir, doctreedir, buildername,
+                         {}, sys.stdout, sys.stderr, freshenv)
+
+            #os.chdir('..')
+            # And build!
+            app.builder.build_all()
+            print "Your docs are now in %s" % outdir
+        except ImportError, ie:
             print >> sys.stderr, "You don't seem to have the following which"
             print >> sys.stderr, "are required to make documentation:"
-            print >> sys.stderr, "\tepydoc.docbuilder.build_doc_index"
-            print >> sys.stderr, "\tepydoc.docwriter.html.HTMLWriter"
-            print >> sys.stderr, "Trying running from the command line ..."
-            try:
-                if os.system('epydoc -o docs src') != 0:
-                    raise
-            except:
-                print >> sys.stderr, "FAIL! exiting ..."
-                sys.exit(1)
-
-        print "Your docs are now in docs"
+            print >> sys.stderr, "\tsphinx.application.Sphinx"
+        except Exception, ex:
+            print >> sys.stderr, "FAIL! exiting ... (%s)" % ex
 
 
 class TestCommand(Command):
@@ -120,7 +127,7 @@ setup(name = "director",
 director is a python library that allows developers to create command line \
 plugins for tools making it easy to add new functionality.
 """,
-    author = 'Steve Milner',
+    author = __author__,
     author_email = 'smilner+director@redhat.com',
     url = "https://fedorahosted.org/director/",
     download_url = "https://fedorahosted.org/releases/d/i/director/",
@@ -138,4 +145,4 @@ plugins for tools making it easy to add new functionality.
         'Programming Language :: Python'],
 
     cmdclass = {'test': TestCommand,
-                'doc': DocCommand})
+                'doc': SphinxCommand})

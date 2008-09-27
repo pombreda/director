@@ -20,6 +20,7 @@ from optparse import OptionParser
 
 __version__ = '1.1.0'
 __license__ = 'GPLv3+'
+__author__ = "Steve 'Ashcrow' Milner"
 
 
 class Action(object):
