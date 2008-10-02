@@ -11,11 +11,11 @@
 Test for director
 """
 
+import exceptions
 import os
 import sys
-import unittest
 import tempfile
-import exceptions
+import unittest
 
 from director.filter import Filter
 from director.filter import ExceptionFilter

@@ -11,8 +11,8 @@
 Exception filters for director.
 """
 
-import sys
 import exceptions
+import sys
 
 
 class Filter(list):
@@ -24,8 +24,7 @@ class Filter(list):
         """
         Executes all filters with an exception.
 
-        @param exception: The exception that is going to be filtered
-        @type exception: object
+        exception is the exception that is going to be filtered.
         """
         for filter in self:
             filter.filter(exception)
@@ -34,8 +33,7 @@ class Filter(list):
         """
         Registers an ExceptionFilter.
 
-        @param exception_filter: The ExceptionFilter to add
-        @type exception_filter: ExceptionFilter
+        exception_filter is the ExceptionFilter to add.
         """
         for filter in self:
             if type(exception_filter.exception('')) == \
@@ -55,10 +53,8 @@ class ExceptionFilter(object):
         """
         Creates the ExceptionFilter object.
 
-        @param exception: The exception to filter
-        @type exception: object
-        @param error_text: The error text to show
-        @type error_text: str
+        exception is the exception to filter.
+        error_text is the error text to show,
         """
         self.exception = exception
         self.error_text = error_text
@@ -67,11 +63,9 @@ class ExceptionFilter(object):
         """
         Filters an exception.
 
-        @param exception: The exception to filter
-        @type exception: object
+        exception is the exception being filtered.
 
-        @return: True on filter, False otherwise
-        @rtype: bool
+        Returns True on filter, False otherwise.
         """
         if type(exception) == type(self.exception('')):
             if "%s" in self.error_text:

@@ -11,10 +11,11 @@
 Main classes for director.
 """
 
+import inspect
 import os
 import sys
 import types
-import inspect
+
 from optparse import OptionParser
 
 
@@ -98,8 +99,7 @@ class Action(object):
 
         Do not override.
 
-        @param verb: The verb to get help on
-        @type verb: str
+        verb is what to get help on.
         """
         # If we have no verb then show help for everything
         if not verb:
@@ -155,11 +155,8 @@ class ActionRunner(object):
         """
         Creates the ActionRunner object.
 
-        @param args: all args passed from command line
-        @type args: list
-
-        @params plugin_package: The package where plugins live
-        @type plugin_package: str
+        args are all args passed from command line.
+        plugin_package is a string explaining he package where plugins live.
         """
         self.plugin_package = plugin_package
         self.args = args
@@ -198,8 +195,7 @@ class ActionRunner(object):
         """
         Parse the options into something that can be passed to a method.
 
-        @return: A usable dictionary to pass to a method
-        @rtype: dict
+        Returns a usable dictionary to pass to a method.
         """
         parser = OptionParser()
         a_verb = self.action_to_run.__getattribute__(self.verb)
@@ -248,8 +244,7 @@ class ActionRunner(object):
         """
         Takes care of running the code created.
 
-        @param code: The code to execute
-        @type code: str
+        code is the code to execute.
         """
         self.action_to_run.__getattribute__(
             self.verb).__call__(**self.options)
@@ -258,8 +253,7 @@ class ActionRunner(object):
         """
         Runs the generated code.
 
-        @param filter_obj: The filter object
-        @type error_str: Filter
+        filter_obj is the filter object.
         """
         try:
             self.run_code()
