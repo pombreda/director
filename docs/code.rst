@@ -13,4 +13,3 @@ Director Filter
 .. automodule:: director.filter
    :members:
    :undoc-members:
-   :inherited-members:
