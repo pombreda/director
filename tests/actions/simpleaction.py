@@ -13,23 +13,17 @@ Test action to use in unit tests.
 
 import director
 
+from director import decorators
+
 
 class Simpleaction(director.Action):
     """
     Very simple action for use in testing.
     """
 
+    @decorators.help("\nOptions:\topt:\tsome kind of options")
     def verb(self, opt, another=False, last="last"):
         """
         An example verb.
-
-        == help ==
-        \nOptions:
-        \topt:\tsome kind of option
-
-        Example:
-        \tmyapp simpleaction verb --opt=something
-
-        == end help ==
         """
         pass

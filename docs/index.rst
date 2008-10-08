@@ -11,6 +11,7 @@ Contents:
    :maxdepth: 2
 
    about
+   examples
    development
    code
    tests

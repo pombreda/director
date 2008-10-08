@@ -11,12 +11,16 @@
 Main classes for director.
 """
 
+import exceptions
 import inspect
 import os
 import sys
 import types
+import warnings
 
 from optparse import OptionParser
+
+from director import decorators
 
 
 __version__ = '1.1.0'
@@ -85,59 +89,55 @@ class Action(object):
             self.help(verb)
             print >> sys.stderr, "\n"
 
+    @decorators.help("\nOptions\n\tverb:\tverb to get help on\n\n\
+Example:\tmyapp list help --verb=help")
     def help(self, verb=None):
         """
         Detailed help information about the action.
 
-        == help ==
-        \nOptions:
-        \tverb:\tverb to get help on
-
-        Example:
-        \tmyapp list help --verb=help
-        == end help ==
+        verb is what to get help on.
 
         Do not override.
-
-        verb is what to get help on.
         """
         # If we have no verb then show help for everything
         if not verb:
             self._action_help()
             return
 
-        base_doc_string = True # signifies we are in the general area
-        in_help = False # signifies if we are in the == help == area
-        doc_string = self.__getattribute__(verb).__doc__.replace("    ", "")
-        # For each line in the doc string see if we should print the info
-        for line in doc_string.split('\n')[1:]:
-            # If we have a blank line AND we are not in the help section ..
-            if line == '' and not in_help:
-                base_doc_string = False
-            # Print base doc string data
-            if base_doc_string:
-                print >> sys.stderr, line
-            # If we see == help == say we are in == help == section
-            if '== help ==' in line:
-                in_help = True
-            # If we see == end help == we are out of the help section
-            elif '== end help ==' in line:
-                in_help = False
-            # Print all lines that are in the help section
-            elif in_help:
-                print >> sys.stderr, line
+        try:
+            print >> sys.stderr, self.__getattribute__(verb).help
+        except:
+            # If we didn't find help attribute then we will need to see if
+            # there is maybe the old style help items since they have not
+            # been removed just yet.
+            base_doc_string = True # signifies we are in the general area
+            in_help = False # signifies if we are in the == help == area
+            doc_string = self.__getattribute__(verb).__doc__.replace("    ",
+                                                                     "")
+            # For each line in the doc string see if we should print the info
+            for line in doc_string.split('\n')[1:]:
+                # If we have a blank line AND we are not in the help section ..
+                if line == '' and not in_help:
+                    base_doc_string = False
+                # Print base doc string data
+                if base_doc_string:
+                    print >> sys.stderr, line
+                # If we see == help == say we are in == help == section
+                if '== help ==' in line:
+                    warnings.warn(exceptions.DeprecationWarning("This way of \
+defining help will be removed soon. Please change to using decorators.help."))
+                    in_help = True
+                # If we see == end help == we are out of the help section
+                elif '== end help ==' in line:
+                    in_help = False
+                # Print all lines that are in the help section
+                elif in_help:
+                    print >> sys.stderr, line
 
+    @decorators.help("\nOptions\n\tNone\n\nExample:\tmyapp list description")
     def description(self):
         """
         Quick blurb about the action.
-
-        == help ==
-        \nOptions:
-        \tNone
-
-        Example:
-        \tmyapp list description
-        == end help ==
 
         Do not override. See description_txt
         """
@@ -199,7 +199,14 @@ class ActionRunner(object):
         """
         parser = OptionParser()
         a_verb = self.action_to_run.__getattribute__(self.verb)
-        inspection_data = [x for x in inspect.getargspec(a_verb)]
+        # Since decorators change what inspect sees we try to use the original
+        # method directly which gets attached as a_verb.meth. If it doesn't
+        # exist then we try the method directly as it is either old style,
+        # using direct method variables or has no help at all.
+        try:
+            inspection_data = [x for x in inspect.getargspec(a_verb.meth)]
+        except:
+            inspection_data = [x for x in inspect.getargspec(a_verb)]
 
         if inspection_data[0] == None:
             inspection_data[0] = []
