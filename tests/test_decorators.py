@@ -25,6 +25,12 @@ class Fake(object):
     def method(self, input):
         return input
 
+    @decorators.kwhelp(desc="Test of kwhelp",
+                       options={'input': 'the input to take'},
+                       examples=['app fake method2 somefile.txt'])
+    def method2(self, input):
+        return input
+
 
 class ActionTests(unittest.TestCase):
     """
@@ -42,6 +48,17 @@ class ActionTests(unittest.TestCase):
         Make sure that the test decorator works as expected.
         """
         self.assertEqual(self.fake_obj.method.help, "Test of help")
+        self.assertEqual(type(self.fake_obj.method.meth), types.FunctionType)
+        self.assertEqual(inspect.getargspec(self.fake_obj.method.meth)[0],
+                         ['self', 'input'])
+
+    def test_kwhelp(self):
+        """
+        Make sure that the kwhelp test decorator works as expected.
+        """
+        rendered = "\nTest of kwhelp\nOPTIONS:\n\tinput\tthe input to take\n\
+EXAMPLES:\n\tapp fake method2 somefile.txt"
+        self.assertEqual(self.fake_obj.method2.help, rendered)
         self.assertEqual(type(self.fake_obj.method.meth), types.FunctionType)
         self.assertEqual(inspect.getargspec(self.fake_obj.method.meth)[0],
                          ['self', 'input'])
