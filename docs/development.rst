@@ -67,17 +67,6 @@ Style
 Git
 ---
 
-Excludes
-````````
-I recommend the following in your :file:`.git/info/exclude`::
-
-   *.pyc
-   *.pyo
-   *.pidaproject
-   MANIFEST
-   dist
-   *.swp
-
 Branching
 `````````
 The best way to develop on restlib is to branch feature sets. For instance, if you were to add xml deserialization you would want to branch locally and work on that branch.::

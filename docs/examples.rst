@@ -33,7 +33,7 @@ Example 'Action'
 ::
 
    from director import Action
-   from director import decorators
+   from director.decorators import general_help
 
 
    class Bucket(Action):
@@ -43,21 +43,23 @@ Example 'Action'
 
        description_txt = "Managers buckets"
 
-       @decorators.help("\nOptions:\n\tNone")
+       @general_help("Prints all buckets.")
        def list(self):
            """
            Prints all buckets.
            """
            pass
 
-       @decorators.help("\nOptions:\tadd:\tName of the bucket to add")
+       @general_help("Adds a new bucket",
+                     {'add': 'Name of the bucket to add'})
        def add(self, name):
            """
            Adds a new bucket.
            """
            print name
 
-       @decorators.help("\nOptions:\tname:\tName of the bucket to delete")
+       @general_help("Deletes a bucket",
+                     {'name': 'Name of the bucket to delete'})
        def delete(self, name):
            """
            Deletes a bucket.
@@ -67,9 +69,7 @@ Example 'Action'
 
 Defining Help Text
 ------------------
-As you can see above, help text defined via a decorator in the decorators module called help. You can put whatever formatted string you want ...
-just make sure to be consistent for the sake of the user!
-
+As you can see above, help text defined via a decorator in the decorators module called general_help. Take a look at the decorators modules and use the decorator that makes most sense for you.
 
 Calling Actions
 ---------------
