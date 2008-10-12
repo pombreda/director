@@ -21,7 +21,7 @@ class Simpleaction(director.Action):
     Very simple action for use in testing.
     """
 
-    @decorators.help("\nOptions:\topt:\tsome kind of options")
+    @decorators.simple_help("\nOptions:\topt:\tsome kind of options")
     def verb(self, opt, another=False, last="last"):
         """
         An example verb.

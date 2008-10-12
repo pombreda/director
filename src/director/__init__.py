@@ -20,7 +20,7 @@ import warnings
 
 from optparse import OptionParser
 
-from director import decorators
+from director.decorators import general_help
 
 
 __version__ = '1.1.0'
@@ -89,8 +89,9 @@ class Action(object):
             self.help(verb)
             print >> sys.stderr, "\n"
 
-    @decorators.help("\nOptions\n\tverb:\tverb to get help on\n\n\
-Example:\tmyapp list help --verb=help")
+    @general_help("Detailed help information about the action.",
+                  {'verb': 'verb to get help on'},
+                  ['myapp list help --verb=help'])
     def help(self, verb=None):
         """
         Detailed help information about the action.
@@ -126,7 +127,7 @@ Example:\tmyapp list help --verb=help")
                 # If we see == help == say we are in == help == section
                 if '== help ==' in line:
                     warnings.warn(exceptions.DeprecationWarning("This way of \
-defining help will be removed soon. Please change to using decorators.help."))
+defining help will be removed soon. Please change to using decorators."))
                     in_help = True
                 # If we see == end help == we are out of the help section
                 elif '== end help ==' in line:
@@ -135,7 +136,8 @@ defining help will be removed soon. Please change to using decorators.help."))
                 elif in_help:
                     print >> sys.stderr, line
 
-    @decorators.help("\nOptions\n\tNone\n\nExample:\tmyapp list description")
+    @general_help("Quick blurb about the action.",
+                  examples=['myapp list description'])
     def description(self):
         """
         Quick blurb about the action.

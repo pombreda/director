@@ -12,7 +12,7 @@ All decorators for director.
 """
 
 
-def help(help_txt):
+def simple_help(help_txt):
     """
     Adds a help variable to a class method as well as saving the original
     method as meth. This is best used for very simple help cases.
@@ -49,7 +49,7 @@ def help(help_txt):
     return decorator
 
 
-def kwhelp(desc, options={}, examples=[]):
+def general_help(desc, options={}, examples=[]):
     """
     Adds a help variable to a class method based on keyword arguments as well
     as saving the original method as meth. This can be used in more verbose

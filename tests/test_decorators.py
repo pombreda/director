@@ -21,13 +21,13 @@ from director import decorators
 
 class Fake(object):
 
-    @decorators.help("Test of help")
+    @decorators.simple_help("Test of help")
     def method(self, input):
         return input
 
-    @decorators.kwhelp(desc="Test of kwhelp",
-                       options={'input': 'the input to take'},
-                       examples=['app fake method2 somefile.txt'])
+    @decorators.general_help(desc="Test of kwhelp",
+                             options={'input': 'the input to take'},
+                             examples=['app fake method2 somefile.txt'])
     def method2(self, input):
         return input
 
@@ -43,7 +43,7 @@ class ActionTests(unittest.TestCase):
         """
         self.fake_obj = Fake()
 
-    def test_help(self):
+    def test_simple_help(self):
         """
         Make sure that the test decorator works as expected.
         """
@@ -52,7 +52,7 @@ class ActionTests(unittest.TestCase):
         self.assertEqual(inspect.getargspec(self.fake_obj.method.meth)[0],
                          ['self', 'input'])
 
-    def test_kwhelp(self):
+    def test_general_help(self):
         """
         Make sure that the kwhelp test decorator works as expected.
         """
