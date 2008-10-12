@@ -95,7 +95,8 @@ Example:\tmyapp list help --verb=help")
         """
         Detailed help information about the action.
 
-        verb is what to get help on.
+        :Parameters:
+            - `verb`: what to get help on.
 
         Do not override.
         """
@@ -155,8 +156,9 @@ class ActionRunner(object):
         """
         Creates the ActionRunner object.
 
-        args are all args passed from command line.
-        plugin_package is a string explaining he package where plugins live.
+        :Parameters:
+            - `args`: all args passed from command line.
+            - `plugin_package`: a string explaining he package where plugins live.
         """
         self.plugin_package = plugin_package
         self.args = args
@@ -260,7 +262,8 @@ class ActionRunner(object):
         """
         Runs the generated code.
 
-        filter_obj is the filter object.
+        :Parameters:
+            - `filter_obj`: the filter object.
         """
         try:
             self.run_code()

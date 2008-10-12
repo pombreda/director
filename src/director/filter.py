@@ -24,7 +24,9 @@ class Filter(list):
         """
         Executes all filters with an exception.
 
-        exception is the exception that is going to be filtered.
+        :Parameters:
+            - `exception`: the exception that is going to be filtered.
+
         """
         for filter in self:
             filter.filter(exception)
@@ -33,7 +35,8 @@ class Filter(list):
         """
         Registers an ExceptionFilter.
 
-        exception_filter is the ExceptionFilter to add.
+        :Parameters:
+            - `exception_filter`: the ExceptionFilter to add.
         """
         for filter in self:
             if type(exception_filter.exception('')) == \
@@ -53,19 +56,19 @@ class ExceptionFilter(object):
         """
         Creates the ExceptionFilter object.
 
-        exception is the exception to filter.
-        error_text is the error text to show,
+        :Parameters:
+            - `exception`: the exception to filter.
+            - `error_text`: the error text to show,
         """
         self.exception = exception
         self.error_text = error_text
 
     def filter(self, exception):
         """
-        Filters an exception.
+        Filters an exception. True on filter, False otherwise.
 
-        exception is the exception being filtered.
-
-        Returns True on filter, False otherwise.
+        :Parameters:
+            - `exception`: the exception being filtered.
         """
         if type(exception) == type(self.exception('')):
             if "%s" in self.error_text:
