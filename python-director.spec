@@ -7,8 +7,8 @@ Summary:        Command line input plugin system
 
 Group:          Development/Libraries
 License:        GPLv3+
-URL:            https://engineering.redhat.com/trac/GIT-RE/
-Source0:        director-%{version}.tar.gz
+URL:            https://fedorahosted.org/director/
+Source0:        https://fedorahosted.org/releases/d/i/director/director-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -45,7 +45,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Sep 17 2008 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.1.0-1
+* Wed Oct 11 2008 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.1.0-1
 - Updated for upstream 1.1.0
 
 * Fri Aug  1 2008 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.0.2-1
@@ -54,5 +54,5 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Jul 18 2008 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.0.1-1
 - Issues with some uses of run_code ... fixed.
 
-* Fri Jul 18 2008 Steve 'Ashcrow' Milner <smilner@redhat.com> - 1.0.0-1
+* Fri Jul 18 2008 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.0.0-1
 - Initial spec
