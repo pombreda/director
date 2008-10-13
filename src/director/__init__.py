@@ -270,6 +270,10 @@ class ActionRunner(object):
         try:
             self.run_code()
         except Exception, ex:
+            # If we have a filters then use them ...
             if filter_obj:
                 filter_obj.execute_filters(ex)
+            else:
+                # If we have no filters then raise the exception
+                raise ex
             sys.exit(1)

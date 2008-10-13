@@ -120,10 +120,20 @@ class ActionRunnerTests(unittest.TestCase):
         """
         filter = Filter()
         filter.register_filter(ExceptionFilter(exceptions.IOError, ''))
+        self.arunner.verb = 'verb'
+        self.arunner.options = {'opt': 'ok'}
         self.arunner.run(filter)
 
-    def test_run_with_filter(self):
+    def test_run_without_filter(self):
         """
         Verify generated code runs without filter.
         """
         self.arunner.run()
+
+    def test_run_execption_without_filter(self):
+        """
+        Verify generated raises an exception if there are no filters
+        during run.
+        """
+        self.arunner.verb = "asdasd"
+        self.assertRaises(AttributeError, self.arunner.run)
