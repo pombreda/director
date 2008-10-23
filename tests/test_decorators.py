@@ -11,6 +11,9 @@
 Test of director decorators.
 """
 
+__docformat__ = 'restructuredtext'
+
+
 import exceptions
 import inspect
 import types

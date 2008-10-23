@@ -11,6 +11,12 @@
 Main classes for director.
 """
 
+__docformat__ = 'restructuredtext'
+__version__ = '1.1.1'
+__license__ = 'GPLv3+'
+__author__ = "Steve 'Ashcrow' Milner"
+
+
 import exceptions
 import inspect
 import os
@@ -21,11 +27,6 @@ import warnings
 from optparse import OptionParser
 
 from director.decorators import general_help
-
-
-__version__ = '1.1.0'
-__license__ = 'GPLv3+'
-__author__ = "Steve 'Ashcrow' Milner"
 
 
 class Action(object):
@@ -160,7 +161,7 @@ class ActionRunner(object):
 
         :Parameters:
             - `args`: all args passed from command line.
-            - `plugin_package`: a string explaining he package where plugins live.
+            - `plugin_package`: the name of the package where plugins live.
         """
         self.plugin_package = plugin_package
         self.args = args

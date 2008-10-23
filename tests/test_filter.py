@@ -11,6 +11,9 @@
 Tests for filter.
 """
 
+__docformat__ = 'restructuredtext'
+
+
 import exceptions
 import unittest
 

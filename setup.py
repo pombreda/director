@@ -13,15 +13,18 @@
 Standard build script.
 """
 
-import sys
+__docformat__ = 'restructuredtext'
+
+
 import os
-from glob import glob
+import sys
+
 from distutils.core import Command, setup
-from unittest import TextTestRunner, TestLoader
+from glob import glob
 from os.path import basename, walk, splitext
 from os.path import join as pjoin
 from os import path
-
+from unittest import TextTestRunner, TestLoader
 
 sys.path.insert(0, 'src')
 sys.path.insert(1, 'tests')

@@ -11,6 +11,9 @@
 Exception filters for director.
 """
 
+__docformat__ = 'restructuredtext'
+
+
 import exceptions
 import sys
 

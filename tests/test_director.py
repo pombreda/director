@@ -11,6 +11,9 @@
 Test for director
 """
 
+__docformat__ = 'restructuredtext'
+
+
 import exceptions
 import os
 import sys

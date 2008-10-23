@@ -11,6 +11,8 @@
 All decorators for director.
 """
 
+__docformat__ = 'restructuredtext'
+
 
 def simple_help(help_txt):
     """

@@ -11,6 +11,9 @@
 Test action to use in unit tests.
 """
 
+__docformat__ = 'restructuredtext'
+
+
 import director
 
 from director import decorators
