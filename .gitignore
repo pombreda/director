@@ -1,9 +1,11 @@
+# All files to globally ignore
 *.pyc
 *.pyo
+*$py.class
+*.swp
+*.patch
 MANIFEST
 dist
 build
 .build
-*.swp
 docs/html
-*$py.class
