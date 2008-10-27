@@ -102,9 +102,9 @@ class Action(object):
 
         Do not override.
         """
-        # If we have no verb then show help for everything
+        # If we have no verb then give available verbs and a usage message
         if not verb:
-            self._action_help()
+            print self.description()
             return
 
         try:
@@ -146,8 +146,10 @@ defining help will be removed soon. Please change to using decorators."))
         Do not override. See description_txt
         """
         verbs = ", ".join(self._list_verbs())
-        print >> sys.stderr, "%s. Available verbs: %s" % (
+        print >> sys.stderr, "%s.\nAvailable verbs: %s" % (
                                       self.description_txt, verbs)
+        print >> sys.stderr, "For more detailed usage use myapp \
+noun help add --verb=verb."
 
 
 class ActionRunner(object):
