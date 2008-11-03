@@ -32,13 +32,10 @@ sys.path.insert(1, 'tests')
 from director import __version__, __license__, __author__
 
 
-class SphinxCommand(Command):
+class SetupBuildCommand(Command):
     """
-    Creates HTML documentation using Sphinx.
+    Master setup build command to subclass from.
     """
-
-    user_options = []
-    description = "Generate documentation via sphinx"
 
     def initialize_options(self):
         """
@@ -51,6 +48,45 @@ class SphinxCommand(Command):
         No clue ... but it's required.
         """
         pass
+
+
+class RPMBuildCommand(SetupBuildCommand):
+    """
+    Creates an RPM based off spec files.
+    """
+
+    user_options = []
+    description = "Build an rpm based off of the top level spec file(s)"
+
+    def run(self):
+        """
+        Run the RPMBuildCommand.
+        """
+        # TODO: This should be changed from shelling out to actually
+        # using the code. For now this works.
+        try:
+            if os.system('./setup.py sdist'):
+                raise Exception("Couldn't call ./setup.py sdist!")
+                sys.exit(1)
+            if not os.access('dist/rpms/', os.F_OK):
+                os.mkdir('dist/rpms/')
+            rpm_cmd = 'rpmbuild -ba --define "_rpmdir dist/rpms/" \
+                                    --define "_srcrpmdir dist/rpms/" \
+                                    --define "_sourcedir %s" *spec' % (
+                      os.path.join(os.getcwd(), 'dist'))
+            if os.system(rpm_cmd):
+                raise Exception("Could not create the rpms!")
+        except Exception, ex:
+            print >> sys.stderr, str(ex)
+
+
+class SphinxCommand(SetupBuildCommand):
+    """
+    Creates HTML documentation using Sphinx.
+    """
+
+    user_options = []
+    description = "Generate documentation via sphinx"
 
     def run(self):
         """
@@ -75,7 +111,6 @@ class SphinxCommand(Command):
             app = Sphinx(srcdir, confdir, outdir, doctreedir, buildername,
                          {}, sys.stdout, sys.stderr, freshenv)
 
-            #os.chdir('..')
             # And build!
             app.builder.build_all()
             print "Your docs are now in %s" % outdir
@@ -87,26 +122,31 @@ class SphinxCommand(Command):
             print >> sys.stderr, "FAIL! exiting ... (%s)" % ex
 
 
+class ViewDocCommand(SetupBuildCommand):
+    """
+    Quick command to view generated docs.
+    """
+
+    user_options = []
+
+    def run(self):
+        """
+        Opens a webbrowser on docs/html/index.html
+        """
+        import webbrowser
+
+        print ("NOTE: If you have not created the docs first this will not be "
+               "helpful. If you don't see any documentation in your browser "
+               "run ./setup.py doc first.")
+        if not webbrowser.open('docs/html/index.html'):
+            print >> sys.stderr, "Could not open on your webbrowser."
+
+
 class TestCommand(Command):
     """
     Distutils testing command.
     """
     user_options = []
-
-    def initialize_options(self):
-        """
-        Setup the current dir.
-        """
-        self._dir = os.getcwd()
-
-    def finalize_options(self):
-        """
-        No clue ... but it's required.
-
-        @param self: Internal Command object.
-        @type self: Command
-        """
-        pass
 
     def run(self):
         """
@@ -148,4 +188,6 @@ plugins for tools making it easy to add new functionality.
         'Programming Language :: Python'],
 
     cmdclass = {'test': TestCommand,
-                'doc': SphinxCommand})
+                'doc': SphinxCommand,
+                'viewdoc': ViewDocCommand,
+                'rpm': RPMBuildCommand})
