@@ -23,7 +23,7 @@ Source
 ------
 You can clone the repo over http via :program:`git` through the following command:::
 
-   $ 
+   $ git clone http://git.fedorahosted.org/git/director.git
 
 
 Style
