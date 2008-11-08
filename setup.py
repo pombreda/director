@@ -37,6 +37,8 @@ class SetupBuildCommand(Command):
     Master setup build command to subclass from.
     """
 
+    user_options = []
+
     def initialize_options(self):
         """
         Setup the current dir.
@@ -55,7 +57,6 @@ class RPMBuildCommand(SetupBuildCommand):
     Creates an RPM based off spec files.
     """
 
-    user_options = []
     description = "Build an rpm based off of the top level spec file(s)"
 
     def run(self):
@@ -85,7 +86,6 @@ class SphinxCommand(SetupBuildCommand):
     Creates HTML documentation using Sphinx.
     """
 
-    user_options = []
     description = "Generate documentation via sphinx"
 
     def run(self):
@@ -127,8 +127,6 @@ class ViewDocCommand(SetupBuildCommand):
     Quick command to view generated docs.
     """
 
-    user_options = []
-
     def run(self):
         """
         Opens a webbrowser on docs/html/index.html
@@ -142,12 +140,10 @@ class ViewDocCommand(SetupBuildCommand):
             print >> sys.stderr, "Could not open on your webbrowser."
 
 
-class TestCommand(Command):
+class TestCommand(SetupBuildCommand):
     """
     Distutils testing command.
     """
-    user_options = []
-
     def run(self):
         """
         Finds all the tests modules in tests/, and runs them.
