@@ -26,6 +26,7 @@ import warnings
 
 from optparse import OptionParser
 
+from director import codes
 from director.decorators import general_help
 
 
@@ -171,7 +172,7 @@ class ActionRunner(object):
         if not len(self.args[1:]) >= 2:
             self.__list_nouns()
             print >> sys.stderr, "Please give at least a noun and a verb."
-            sys.exit(1)
+            raise SystemExit(codes.system.NOT_ENOUGH_PARAMETERS)
         # Get all the options passed in
         self.noun, self.verb = args[1:3]
 
@@ -279,4 +280,4 @@ class ActionRunner(object):
             else:
                 # If we have no filters then raise the exception
                 raise ex
-            sys.exit(1)
+            raise SystemExit(codes.system.EXCEPTION_RAISED)

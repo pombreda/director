@@ -14,8 +14,20 @@ Director Filter
    :members:
    :undoc-members:
 
-Director Decorators
+director decorators
 -------------------
 .. automodule:: director.decorators
+   :members:
+   :undoc-members:
+
+director codes
+--------------
+.. automodule:: director.codes
+   :members:
+   :undoc-members:
+
+director codes system
+---------------------
+.. automodule:: director.codes.system
    :members:
    :undoc-members:
