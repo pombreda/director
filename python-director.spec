@@ -1,13 +1,20 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+# Done to avoid duplication of information
+%{!?app_name: %define app_name %(%{__python} setup.py --name)}
+%{!?app_version: %define app_version %(%{__python} setup.py --version)}
+%{!?app_summary: %define app_summary %(%{__python} setup.py --description)}
+%{!?app_description: %define app_description %(%{__python} setup.py --long-description)}
+%{!?app_license: %define app_license %(%{__python} setup.py --license)}
+%{!?app_url: %define app_url %(%{__python} setup.py --url)}
 
-Name:           python-director
-Version:        1.1.1
+Name:           python-%{app_name}
+Version:        %{app_version}
 Release:        1%{?dist}
-Summary:        Command line input plugin system
+Summary:        %{app_summary}
 
 Group:          Development/Libraries
-License:        GPLv3+
-URL:            https://fedorahosted.org/director/
+License:        %{app_license}
+URL:            %{app_url}
 Source0:        https://fedorahosted.org/releases/d/i/director/director-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -17,7 +24,7 @@ BuildRequires:  python-setuptools
 
 
 %description
-A near drop in command line option plugin system for python applications.
+%{app_description}
 
 
 %prep
@@ -45,6 +52,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Nov 28 2008 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.1.2-1
+- Updated for upstream 1.1.2
+
 * Wed Oct 22 2008 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.1.1-1
 - Updated for upstream 1.1.1
 

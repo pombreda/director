@@ -63,8 +63,6 @@ class RPMBuildCommand(SetupBuildCommand):
         """
         Run the RPMBuildCommand.
         """
-        # TODO: This should be changed from shelling out to actually
-        # using the code. For now this works.
         try:
             if os.system('./setup.py sdist'):
                 raise Exception("Couldn't call ./setup.py sdist!")
@@ -144,6 +142,7 @@ class TestCommand(SetupBuildCommand):
     """
     Distutils testing command.
     """
+
     def run(self):
         """
         Finds all the tests modules in tests/, and runs them.
@@ -163,9 +162,8 @@ setup(name = "director",
     version = __version__,
     description = "Command line plugin library",
     long_description = """\
-director is a python library that allows developers to create command line \
-plugins for tools making it easy to add new functionality.
-""",
+director is a python library that allows developers to create command line
+plugins for tools making it easy to add new functionality.""",
     author = __author__,
     author_email = 'smilner+director@redhat.com',
     url = "https://fedorahosted.org/director/",
@@ -175,7 +173,7 @@ plugins for tools making it easy to add new functionality.
     license = __license__,
 
     package_dir = {'director': 'src/director'},
-    packages = ['director'],
+    packages = ['director', 'director.codes'],
 
     classifiers = [
         'License :: OSI Approved :: GNU General Public License (GPL)',
