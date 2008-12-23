@@ -69,10 +69,11 @@ class RPMBuildCommand(SetupBuildCommand):
                 sys.exit(1)
             if not os.access('dist/rpms/', os.F_OK):
                 os.mkdir('dist/rpms/')
-            rpm_cmd = 'rpmbuild -ba --define "_rpmdir dist/rpms/" \
-                                    --define "_srcrpmdir dist/rpms/" \
+            dist_path = os.path.join(os.getcwd(), 'dist')
+            rpm_cmd = 'rpmbuild -ba --define "_rpmdir %s/rpms/" \
+                                    --define "_srcrpmdir %s/rpms/" \
                                     --define "_sourcedir %s" *spec' % (
-                      os.path.join(os.getcwd(), 'dist'))
+                      dist_path, dist_path, dist_path)
             if os.system(rpm_cmd):
                 raise Exception("Could not create the rpms!")
         except Exception, ex:

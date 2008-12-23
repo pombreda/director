@@ -251,9 +251,7 @@ class ActionRunner(object):
         # Bind the defaults
         parser.set_defaults(**defaults)
         options, largs = parser.parse_args(self.args[3:])
-        # TODO: Hack to make options into a dictionary
-        exec("options = %s" % options)
-        return options
+        return options.__dict__
 
     def run_code(self):
         """
