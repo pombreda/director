@@ -52,6 +52,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan  7 2009 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.1.3-1
+- Updated for upstream 1.1.3
+
 * Fri Nov 28 2008 Steve 'Ashcrow' Milner <smilner+director@redhat.com> - 1.1.2-1
 - Updated for upstream 1.1.2
 

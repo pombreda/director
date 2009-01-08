@@ -3,15 +3,37 @@ Development
 
 Tools
 -----
-restlib uses what is becoming a pretty standard and a quite simple toolset.
+Director uses what is becoming a pretty standard and a quite simple toolset.
 
 
 Required Tools
 --------------
- #. `python <http://www.python.org>`_ - The python programming language
+ #. `python <http://www.python.org>`_ - The python programming language or an alternate implementation (see bellow).
  #. `distutils <http://docs.python.org/lib/module-distutils.html>`_ - Python building and packaging library
  #. `git <http://git.or.cz/>`_ - Source code management 
  #. `an <http://www.vim.org>`_ `editor <http://www.gnu.org/software/emacs/>`_ or `ide <http://pida.co.uk/>`_ `that <http://scribes.sourceforge.net/>`_ doesn't suck
+
+
+Python Implementations
+----------------------
+
++-------------------------------------------------------------------------------------+----------------------------+-----------+
+| Implementation                                                                      | Status                     | Reporter  |
++=====================================================================================+============================+===========+
+| `CPython 2.3+ <http://www.python.org/>`_                                            | Works                      | ashcrow   |
++-------------------------------------------------------------------------------------+----------------------------+-----------+
+| `CPython 3.0 <http://www.python.org/>`_                                             | Works in Python3.0 branch  | ashcrow   |
++-------------------------------------------------------------------------------------+----------------------------+-----------+
+| `Stackless 2.3+ <http://www.stackless.com/>`_                                       | Untested                   | ashcrow   |
++-------------------------------------------------------------------------------------+----------------------------+-----------+
+| `Jython 2.5 <http://www.jython.org/>`_                                              | Works                      | ashcrow   |
++-------------------------------------------------------------------------------------+----------------------------+-----------+
+| `IronPython 2.0 <http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython/>`_  | Untested                   | ashcrow   |
++-------------------------------------------------------------------------------------+----------------------------+-----------+
+| `IronPython 1.x <http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython/>`_  | Broken                     | ashcrow   |
++-------------------------------------------------------------------------------------+----------------------------+-----------+
+| `Pypy <http://codespeak.net/pypy/dist/pypy/doc/home.html/>`_                        | Works                      | fijal     |
++-------------------------------------------------------------------------------------+----------------------------+-----------+
 
 
 Optional Tools
@@ -69,7 +91,7 @@ Git
 
 Branching
 `````````
-The best way to develop on restlib is to branch feature sets. For instance, if you were to add xml deserialization you would want to branch locally and work on that branch.::
+The best way to develop on Director is to branch feature sets. For instance, if you were to add xml deserialization you would want to branch locally and work on that branch.::
 
    $  git branch
    * master
