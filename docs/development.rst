@@ -3,7 +3,7 @@ Development
 
 Tools
 -----
-Director uses what is becoming a pretty standard and a quite simple toolset.
+director uses what is becoming a pretty standard and a quite simple toolset.
 
 
 Required Tools
@@ -91,7 +91,11 @@ Git
 
 Branching
 `````````
+<<<<<<< HEAD:docs/development.rst
 The best way to develop on Director is to branch feature sets. For instance, if you were to add xml deserialization you would want to branch locally and work on that branch.::
+=======
+The best way to develop on director is to branch feature sets. For instance, if you were to add xml deserialization you would want to branch locally and work on that branch.::
+>>>>>>> Merged 1.2.0 branch.:docs/development.rst
 
    $  git branch
    * master

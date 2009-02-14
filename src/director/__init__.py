@@ -12,17 +12,18 @@ Main classes for director.
 """
 
 __docformat__ = 'restructuredtext'
-__version__ = '1.1.3'
+__version__ = '1.2.0'
 __license__ = 'GPLv3+'
 __author__ = "Steve 'Ashcrow' Milner"
 
 
-import exceptions
 import inspect
 import os
 import sys
 import types
 import warnings
+
+import director.error
 
 from optparse import OptionParser
 
@@ -111,32 +112,8 @@ class Action(object):
         try:
             print >> sys.stderr, self.__getattribute__(verb).help
         except:
-            # If we didn't find help attribute then we will need to see if
-            # there is maybe the old style help items since they have not
-            # been removed just yet.
-            base_doc_string = True # signifies we are in the general area
-            in_help = False # signifies if we are in the == help == area
-            doc_string = self.__getattribute__(verb).__doc__.replace("    ",
-                                                                     "")
-            # For each line in the doc string see if we should print the info
-            for line in doc_string.split('\n')[1:]:
-                # If we have a blank line AND we are not in the help section ..
-                if line == '' and not in_help:
-                    base_doc_string = False
-                # Print base doc string data
-                if base_doc_string:
-                    print >> sys.stderr, line
-                # If we see == help == say we are in == help == section
-                if '== help ==' in line:
-                    warnings.warn(exceptions.DeprecationWarning("This way of \
-defining help will be removed soon. Please change to using decorators."))
-                    in_help = True
-                # If we see == end help == we are out of the help section
-                elif '== end help ==' in line:
-                    in_help = False
-                # Print all lines that are in the help section
-                elif in_help:
-                    print >> sys.stderr, line
+            raise director.error.UnsuportedHelpStyleError(
+                'Unsupported help style being used.')
 
     @general_help("Quick blurb about the action.",
                   examples=['myapp list description'])
