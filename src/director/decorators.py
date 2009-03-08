@@ -86,7 +86,7 @@ def general_help(desc, options={}, examples=[]):
         rendered = "\n%s\n" % desc
         if options:
             rendered += "OPTIONS:"
-            for key in options.keys():
+            for key in list(options.keys()):
                 rendered += "\n\t%s\t%s" % (key, options[key])
         if examples:
             rendered += "\nEXAMPLES:"

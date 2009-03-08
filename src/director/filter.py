@@ -14,7 +14,6 @@ Exception filters for director.
 __docformat__ = 'restructuredtext'
 
 
-import exceptions
 import sys
 
 
@@ -75,8 +74,8 @@ class ExceptionFilter(object):
         """
         if type(exception) == type(self.exception('')):
             if "%s" in self.error_text:
-                print >> sys.stderr, self.error_text % exception
+                print(self.error_text % exception, file=sys.stderr)
             else:
-                print >> sys.stderr, self.error_text
+                print(self.error_text, file=sys.stderr)
             return True
         return False

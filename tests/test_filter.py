@@ -14,7 +14,6 @@ Tests for filter.
 __docformat__ = 'restructuredtext'
 
 
-import exceptions
 import unittest
 
 from director.filter import Filter
@@ -42,14 +41,14 @@ class FilterTests(unittest.TestCase):
         """
         Tests the register_filter method.
         """
-        self.filter.register_filter(ExceptionFilter(exceptions.IOError, 'ERR'))
+        self.filter.register_filter(ExceptionFilter(IOError, 'ERR'))
         self.assertEqual(len(self.filter), 1)
 
     def test_execute_filters(self):
         """
         Tests the execute_filters method.
         """
-        self.filter.execute_filters(exceptions.Exception(''))
+        self.filter.execute_filters(Exception(''))
 
 
 class ExceptionFilterTests(unittest.TestCase):
@@ -61,7 +60,7 @@ class ExceptionFilterTests(unittest.TestCase):
         """
         Sets up stuff for the test.
         """
-        self.exception_filter = ExceptionFilter(exceptions.IOError)
+        self.exception_filter = ExceptionFilter(IOError)
 
     def tearDown(self):
         """
@@ -73,5 +72,5 @@ class ExceptionFilterTests(unittest.TestCase):
         """
         Tests the filter functionality.
         """
-        self.exception_filter.filter(exceptions.IOError(''))
-        self.exception_filter.filter(exceptions.TypeError(''))
+        self.exception_filter.filter(IOError(''))
+        self.exception_filter.filter(TypeError(''))

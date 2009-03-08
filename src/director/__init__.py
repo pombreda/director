@@ -85,12 +85,12 @@ class Action(object):
         """
         Formats and shows help for all available verbs in an action.
         """
-        print >> sys.stderr, "Usage: myapp [verb] [--opt=val]..."
-        print >> sys.stderr, "%s\n" % self.description_txt
+        print("Usage: myapp [verb] [--opt=val]...", file=sys.stderr)
+        print("%s\n" % self.description_txt, file=sys.stderr)
         for verb in self._list_verbs():
-            print >> sys.stderr, "%s -" % verb,
+            print("%s -" % verb, end=' ', file=sys.stderr)
             self.help(verb)
-            print >> sys.stderr, "\n"
+            print("\n", file=sys.stderr)
 
     @general_help("Detailed help information about the action.",
                   {'verb': 'verb to get help on'},
@@ -106,11 +106,11 @@ class Action(object):
         """
         # If we have no verb then give available verbs and a usage message
         if not verb:
-            print self.description()
+            print(self.description())
             return
 
         try:
-            print >> sys.stderr, self.__getattribute__(verb).help
+            print(self.__getattribute__(verb).help, file=sys.stderr)
         except:
             raise director.error.UnsuportedHelpStyleError(
                 'Unsupported help style being used.')
@@ -124,10 +124,10 @@ class Action(object):
         Do not override. See description_txt
         """
         verbs = ", ".join(self._list_verbs())
-        print >> sys.stderr, "%s.\nAvailable verbs: %s" % (
-                                      self.description_txt, verbs)
-        print >> sys.stderr, "For more detailed usage use myapp \
-noun help add --verb=verb."
+        print("%s.\nAvailable verbs: %s" % (
+            self.description_txt, verbs), file=sys.stderr)
+        print("For more detailed usage use myapp \
+noun help add --verb=verb.", file=sys.stderr)
 
 
 class ActionRunner(object):
@@ -148,7 +148,7 @@ class ActionRunner(object):
 
         if not len(self.args[1:]) >= 2:
             self.__list_nouns()
-            print >> sys.stderr, "Please give at least a noun and a verb."
+            print("Please give at least a noun and a verb.", file=sys.stderr)
             raise SystemExit(codes.system.NOT_ENOUGH_PARAMETERS)
         # Get all the options passed in
         self.noun, self.verb = args[1:3]
@@ -166,15 +166,16 @@ class ActionRunner(object):
         Lists all available nouns.
         """
         action_mod = __import__(self.plugin_package)
-        print >> sys.stderr, "Available nouns:",
+        print("Available nouns:", end=' ', file=sys.stderr)
         # Get the module path from __path__ of action_mod and plugin_package
         mod_path = os.path.join(action_mod.__path__[0],
                                 self.plugin_package.split('.')[-1])
         # Go over each and print out the ones that are actions
         for noun in os.listdir(mod_path):
             if "__" not in noun and '.pyc' not in noun:
-                print >> sys.stderr, "%s " % noun.replace('.py', ''),
-        print >> sys.stderr, ""
+                print("%s " % noun.replace('.py', ''),
+                    end=' ', file=sys.stderr)
+        print("", file=sys.stderr)
 
     def parse_options(self):
         """
@@ -207,7 +208,7 @@ class ActionRunner(object):
             try:
                 # Make sure we set up defaults
                 def_item = iargs_defaults[iarg_x]
-                if type(def_item) == types.TupleType:
+                if type(def_item) == tuple:
                     def_item = def_item[0]
                 defaults[iargs[iarg_x]] = def_item
 
@@ -216,7 +217,7 @@ class ActionRunner(object):
                     action = 'store_true'
                 elif defaults[iargs[iarg_x]] == False:
                     action = 'store_false'
-            except IndexError, ie:
+            except IndexError as ie:
                 # Not everything has a default
                 pass
 
@@ -248,7 +249,7 @@ class ActionRunner(object):
         """
         try:
             self.run_code()
-        except Exception, ex:
+        except Exception as ex:
             # If we have a filters then use them ...
             if filter_obj:
                 filter_obj.execute_filters(ex)

@@ -14,7 +14,6 @@ Test for director
 __docformat__ = 'restructuredtext'
 
 
-import exceptions
 import os
 import sys
 import tempfile
@@ -122,7 +121,7 @@ class ActionRunnerTests(unittest.TestCase):
         Verify generated code runs with filter.
         """
         filter = Filter()
-        filter.register_filter(ExceptionFilter(exceptions.IOError, ''))
+        filter.register_filter(ExceptionFilter(IOError, ''))
         self.arunner.verb = 'verb'
         self.arunner.options = {'opt': 'ok'}
         self.arunner.run(filter)

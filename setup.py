@@ -21,9 +21,9 @@ import sys
 
 from distutils.core import Command, setup
 from glob import glob
-from os.path import basename, walk, splitext
+from os.path import basename, splitext
 from os.path import join as pjoin
-from os import path
+from os import path, walk
 from unittest import TextTestRunner, TestLoader
 
 sys.path.insert(0, 'src')
@@ -76,8 +76,8 @@ class RPMBuildCommand(SetupBuildCommand):
                       dist_path, dist_path, dist_path)
             if os.system(rpm_cmd):
                 raise Exception("Could not create the rpms!")
-        except Exception, ex:
-            print >> sys.stderr, str(ex)
+        except Exception as ex:
+            print(str(ex), file=sys.stderr)
 
 
 class SphinxCommand(SetupBuildCommand):
@@ -91,7 +91,7 @@ class SphinxCommand(SetupBuildCommand):
         """
         Run the DocCommand.
         """
-        print "Creating html documentation ..."
+        print("Creating html documentation ...")
 
         try:
             from sphinx.application import Sphinx
@@ -112,13 +112,14 @@ class SphinxCommand(SetupBuildCommand):
 
             # And build!
             app.builder.build_all()
-            print "Your docs are now in %s" % outdir
-        except ImportError, ie:
-            print >> sys.stderr, "You don't seem to have the following which"
-            print >> sys.stderr, "are required to make documentation:"
-            print >> sys.stderr, "\tsphinx.application.Sphinx"
-        except Exception, ex:
-            print >> sys.stderr, "FAIL! exiting ... (%s)" % ex
+            print("Your docs are now in %s" % outdir)
+        except ImportError as ie:
+            print("You don't seem to have the following which",
+                file=sys.stderr)
+            print("are required to make documentation:", file=sys.stderr)
+            print("\tsphinx.application.Sphinx", file=sys.stderr)
+        except Exception as ex:
+            print("FAIL! exiting ... (%s)" % ex, file=sys.stderr)
 
 
 class ViewDocCommand(SetupBuildCommand):
@@ -136,7 +137,7 @@ class ViewDocCommand(SetupBuildCommand):
                "helpful. If you don't see any documentation in your browser "
                "run ./setup.py doc first.")
         if not webbrowser.open('docs/html/index.html'):
-            print >> sys.stderr, "Could not open on your webbrowser."
+            print("Could not open on your webbrowser.", file=sys.stderr)
 
 
 class TestCommand(SetupBuildCommand):
@@ -179,7 +180,7 @@ class TODOCommand(SetupBuildCommand):
             line_no = 0
             todo_obj = open('TODO', 'r')
             for line in todo_obj.readlines():
-                print format_str % ("TODO", line_no, line[:-1])
+                print(format_str % ("TODO", line_no, line[:-1]))
                 line_no += 1
             todo_obj.close()
         except:
@@ -198,9 +199,9 @@ class TODOCommand(SetupBuildCommand):
                             if 'todo' in line.lower():
                                 nice_line = remove_front_whitespace.match(
                                     line).group(1)
-                                print format_str % (full_path,
+                                print(format_str % (full_path,
                                                        line_no,
-                                                       nice_line)
+                                                       nice_line))
                             line_no += 1
 
 
