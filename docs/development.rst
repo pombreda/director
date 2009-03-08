@@ -28,7 +28,7 @@ Python Implementations
 +-------------------------------------------------------------------------------------+----------------------------+-----------+
 | `Jython 2.5 <http://www.jython.org/>`_                                              | Works                      | ashcrow   |
 +-------------------------------------------------------------------------------------+----------------------------+-----------+
-| `IronPython 2.0 <http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython/>`_  | Untested                   | ashcrow   |
+| `IronPython 2.0 <http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython/>`_  | Works                      | ashcrow   |
 +-------------------------------------------------------------------------------------+----------------------------+-----------+
 | `IronPython 1.x <http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython/>`_  | Broken                     | ashcrow   |
 +-------------------------------------------------------------------------------------+----------------------------+-----------+
@@ -91,11 +91,7 @@ Git
 
 Branching
 `````````
-<<<<<<< HEAD:docs/development.rst
-The best way to develop on Director is to branch feature sets. For instance, if you were to add xml deserialization you would want to branch locally and work on that branch.::
-=======
 The best way to develop on director is to branch feature sets. For instance, if you were to add xml deserialization you would want to branch locally and work on that branch.::
->>>>>>> Merged 1.2.0 branch.:docs/development.rst
 
    $  git branch
    * master
