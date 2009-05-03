@@ -42,8 +42,8 @@ class Filter(list):
             - `exception_filter`: the ExceptionFilter to add.
         """
         for filter in self:
-            if type(exception_filter.exception('')) == \
-                    type(filter.exception('')):
+            if (type(exception_filter.exception('')) ==
+                type(filter.exception(''))):
                 txt = 'You can only have one filter for one exception: %s' % (
                        exception_filter.exception)
                 raise Exception(txt)

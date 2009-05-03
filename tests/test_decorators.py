@@ -59,8 +59,8 @@ class ActionTests(unittest.TestCase):
         """
         Make sure that the kwhelp test decorator works as expected.
         """
-        rendered = "\nTest of kwhelp\nOPTIONS:\n\tinput\tthe input to take\n\
-EXAMPLES:\n\tapp fake method2 somefile.txt"
+        rendered = ("\nTest of kwhelp\nOPTIONS:\n\tinput\tthe input to take\n"
+            "EXAMPLES:\n\tapp fake method2 somefile.txt")
         self.assertEqual(self.fake_obj.method2.help, rendered)
         self.assertEqual(type(self.fake_obj.method.meth), types.FunctionType)
         self.assertEqual(inspect.getargspec(self.fake_obj.method.meth)[0],

@@ -70,10 +70,10 @@ class RPMBuildCommand(SetupBuildCommand):
             if not os.access('dist/rpms/', os.F_OK):
                 os.mkdir('dist/rpms/')
             dist_path = os.path.join(os.getcwd(), 'dist')
-            rpm_cmd = 'rpmbuild -ba --define "_rpmdir %s/rpms/" \
-                                    --define "_srcrpmdir %s/rpms/" \
-                                    --define "_sourcedir %s" *spec' % (
-                      dist_path, dist_path, dist_path)
+            rpm_cmd = ('rpmbuild -ba --define "_rpmdir %s/rpms/" '
+                '--define "_srcrpmdir %s/rpms/" '
+                '--define "_sourcedir %s" *spec' % (
+                      dist_path, dist_path, dist_path))
             if os.system(rpm_cmd):
                 raise Exception("Could not create the rpms!")
         except Exception, ex:
@@ -207,9 +207,9 @@ class TODOCommand(SetupBuildCommand):
 setup(name = "director",
     version = __version__,
     description = "Command line plugin library",
-    long_description = """\
-director is a python library that allows developers to create command line
-plugins for tools making it easy to add new functionality.""",
+    long_description = ("director is a python library that allows developers "
+        "to create command line plugins for tools making it easy to add new "
+        "functionality."),
     author = __author__,
     author_email = 'smilner+director@redhat.com',
     url = "https://fedorahosted.org/director/",

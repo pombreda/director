@@ -126,8 +126,8 @@ class Action(object):
         verbs = ", ".join(self._list_verbs())
         print >> sys.stderr, "%s.\nAvailable verbs: %s" % (
                                       self.description_txt, verbs)
-        print >> sys.stderr, "For more detailed usage use myapp \
-noun help add --verb=verb."
+        print >> sys.stderr, ("For more detailed usage use myapp "
+            "noun help add --verb=verb.")
 
 
 class ActionRunner(object):
