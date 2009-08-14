@@ -10,3 +10,17 @@
 """
 Unittests.
 """
+
+import glob
+import os.path
+
+from unittest import TestLoader
+
+
+TESTFILES = []
+for t in glob.glob(os.path.join('tests', '*.py')):
+    if not t.endswith('__init__.py'):
+        TESTFILES.append('.'.join(
+            ['tests', os.path.splitext(os.path.basename(t))[0]]))
+
+TESTS = TestLoader().loadTestsFromNames(TESTFILES)

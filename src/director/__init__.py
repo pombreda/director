@@ -12,7 +12,7 @@ Main classes for director.
 """
 
 __docformat__ = 'restructuredtext'
-__version__ = '1.2.0'
+__version__ = '1.2.0.1'
 __license__ = 'GPLv3+'
 __author__ = "Steve 'Ashcrow' Milner"
 

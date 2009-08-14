@@ -9,7 +9,7 @@ director uses what is becoming a pretty standard and a quite simple toolset.
 Required Tools
 --------------
  #. `python <http://www.python.org>`_ - The python programming language or an alternate implementation (see bellow).
- #. `distutils <http://docs.python.org/lib/module-distutils.html>`_ - Python building and packaging library
+ #. `setuptools <http://pypi.python.org/pypi/setuptools>`_ - Python building and packaging library
  #. `git <http://git.or.cz/>`_ - Source code management 
  #. `an <http://www.vim.org>`_ `editor <http://www.gnu.org/software/emacs/>`_ or `ide <http://pida.co.uk/>`_ `that <http://scribes.sourceforge.net/>`_ doesn't suck
 

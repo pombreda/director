@@ -19,17 +19,16 @@ __docformat__ = 'restructuredtext'
 import os
 import sys
 
-from distutils.core import Command, setup
-from glob import glob
-from os.path import basename, walk, splitext
-from os.path import join as pjoin
-from os import path
-from unittest import TextTestRunner, TestLoader
+from setuptools import Command, setup
 
 sys.path.insert(0, 'src')
 sys.path.insert(1, 'tests')
 
 from director import __version__, __license__, __author__
+
+
+# shortcut for writing to stderr
+err = lambda s: sys.stderr.write(s + "\n")
 
 
 class SetupBuildCommand(Command):
@@ -77,7 +76,7 @@ class RPMBuildCommand(SetupBuildCommand):
             if os.system(rpm_cmd):
                 raise Exception("Could not create the rpms!")
         except Exception, ex:
-            print >> sys.stderr, str(ex)
+            err(str(ex))
 
 
 class SphinxCommand(SetupBuildCommand):
@@ -91,19 +90,19 @@ class SphinxCommand(SetupBuildCommand):
         """
         Run the DocCommand.
         """
-        print "Creating html documentation ..."
+        print("Creating html documentation ...")
 
         try:
             from sphinx.application import Sphinx
 
-            if not os.access(path.join('docs', 'html'), os.F_OK):
-                os.mkdir(path.join('docs', 'html'))
+            if not os.access(os.path.join('docs', 'html'), os.F_OK):
+                os.mkdir(os.path.join('docs', 'html'))
             buildername = 'html'
-            outdir = path.abspath(path.join('docs', 'html'))
+            outdir = os.path.abspath(os.path.join('docs', 'html'))
             doctreedir = os.path.join(outdir, '.doctrees')
 
-            confdir = path.abspath('docs')
-            srcdir = path.abspath('docs')
+            confdir = os.path.abspath('docs')
+            srcdir = os.path.abspath('docs')
             freshenv = False
 
             # Create the builder
@@ -112,13 +111,13 @@ class SphinxCommand(SetupBuildCommand):
 
             # And build!
             app.builder.build_all()
-            print "Your docs are now in %s" % outdir
+            print("Your docs are now in %s" % outdir)
         except ImportError, ie:
-            print >> sys.stderr, "You don't seem to have the following which"
-            print >> sys.stderr, "are required to make documentation:"
-            print >> sys.stderr, "\tsphinx.application.Sphinx"
+            err("You don't seem to have the following which")
+            err("are required to make documentation:")
+            err("\tsphinx.application.Sphinx")
         except Exception, ex:
-            print >> sys.stderr, "FAIL! exiting ... (%s)" % ex
+            err("FAIL! exiting ... (%s)" % ex)
 
 
 class ViewDocCommand(SetupBuildCommand):
@@ -132,31 +131,11 @@ class ViewDocCommand(SetupBuildCommand):
         """
         import webbrowser
 
-        print ("NOTE: If you have not created the docs first this will not be "
-               "helpful. If you don't see any documentation in your browser "
-               "run ./setup.py doc first.")
+        print("NOTE: If you have not created the docs first this will not be "
+              "helpful. If you don't see any documentation in your browser "
+              "run ./setup.py doc first.")
         if not webbrowser.open('docs/html/index.html'):
-            print >> sys.stderr, "Could not open on your webbrowser."
-
-
-class TestCommand(SetupBuildCommand):
-    """
-    Distutils testing command.
-    """
-
-    def run(self):
-        """
-        Finds all the tests modules in tests/, and runs them.
-        """
-        testfiles = []
-        for t in glob(pjoin(self._dir, 'tests', '*.py')):
-            if not t.endswith('__init__.py'):
-                testfiles.append('.'.join(
-                    ['tests', splitext(basename(t))[0]]))
-
-        tests = TestLoader().loadTestsFromNames(testfiles)
-        t = TextTestRunner(verbosity = 2)
-        t.run(tests)
+            err("Could not open on your webbrowser.")
 
 
 class TODOCommand(SetupBuildCommand):
@@ -220,15 +199,14 @@ setup(name = "director",
 
     package_dir = {'director': 'src/director'},
     packages = ['director', 'director.codes'],
-
+    test_suite = "tests.TESTS",
     classifiers = [
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Development Status :: 5 - Production/Stable',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Programming Language :: Python'],
 
-    cmdclass = {'test': TestCommand,
-                'doc': SphinxCommand,
+    cmdclass = {'doc': SphinxCommand,
                 'viewdoc': ViewDocCommand,
                 'rpm': RPMBuildCommand,
                 'todo': TODOCommand})

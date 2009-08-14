@@ -11,3 +11,4 @@ dist
 build
 .build
 docs/html
+*egg-info
