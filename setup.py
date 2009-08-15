@@ -158,7 +158,7 @@ class TODOCommand(SetupBuildCommand):
             line_no = 0
             todo_obj = open('TODO', 'r')
             for line in todo_obj.readlines():
-                print format_str % ("TODO", line_no, line[:-1])
+                print(format_str % ("TODO", line_no, line[:-1]))
                 line_no += 1
             todo_obj.close()
         except:
@@ -177,9 +177,9 @@ class TODOCommand(SetupBuildCommand):
                             if 'todo' in line.lower():
                                 nice_line = remove_front_whitespace.match(
                                     line).group(1)
-                                print format_str % (full_path,
+                                print(format_str % (full_path,
                                                        line_no,
-                                                       nice_line)
+                                                       nice_line))
                             line_no += 1
 
 

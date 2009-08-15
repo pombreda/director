@@ -31,6 +31,20 @@ from director import codes
 from director.decorators import general_help
 
 
+def err(text, newline=True):
+    """
+    Shortcut for printing to stderr.
+
+    :Parameters:
+       - `text`: what to print
+       - `newline`: if a newline be appended to the string
+    """
+    text = str(text)
+    if newline:
+        text = text + "\n"
+    sys.stderr.write(text)
+
+
 class Action(object):
     """
     Base class for command line actions.
@@ -85,12 +99,12 @@ class Action(object):
         """
         Formats and shows help for all available verbs in an action.
         """
-        print >> sys.stderr, "Usage: myapp [verb] [--opt=val]..."
-        print >> sys.stderr, "%s\n" % self.description_txt
+        err("Usage: myapp [verb] [--opt=val]...", False)
+        err(self.description_txt)
         for verb in self._list_verbs():
-            print >> sys.stderr, "%s -" % verb,
+            err("%s -" % verb, False)
             self.help(verb)
-            print >> sys.stderr, "\n"
+            err('')
 
     @general_help("Detailed help information about the action.",
                   {'verb': 'verb to get help on'},
@@ -106,11 +120,10 @@ class Action(object):
         """
         # If we have no verb then give available verbs and a usage message
         if not verb:
-            print self.description()
-            return
-
+            err(self.description())
+            return None
         try:
-            print >> sys.stderr, self.__getattribute__(verb).help
+            err(self.__getattribute__(verb).help)
         except:
             raise director.error.UnsuportedHelpStyleError(
                 'Unsupported help style being used.')
@@ -124,10 +137,9 @@ class Action(object):
         Do not override. See description_txt
         """
         verbs = ", ".join(self._list_verbs())
-        print >> sys.stderr, "%s.\nAvailable verbs: %s" % (
-                                      self.description_txt, verbs)
-        print >> sys.stderr, ("For more detailed usage use myapp "
-            "noun help add --verb=verb.")
+        err("%s.\nAvailable verbs: %s" % (
+            self.description_txt, verbs))
+        err("For more detailed usage use myapp noun help add --verb=verb.")
 
 
 class ActionRunner(object):
@@ -148,7 +160,7 @@ class ActionRunner(object):
 
         if not len(self.args[1:]) >= 2:
             self.__list_nouns()
-            print >> sys.stderr, "Please give at least a noun and a verb."
+            err("Please give at least a noun and a verb.")
             raise SystemExit(codes.system.NOT_ENOUGH_PARAMETERS)
         # Get all the options passed in
         self.noun, self.verb = args[1:3]
@@ -166,15 +178,15 @@ class ActionRunner(object):
         Lists all available nouns.
         """
         action_mod = __import__(self.plugin_package)
-        print >> sys.stderr, "Available nouns:",
+        err("Available nouns:", False)
         # Get the module path from __path__ of action_mod and plugin_package
         mod_path = os.path.join(action_mod.__path__[0],
                                 self.plugin_package.split('.')[-1])
         # Go over each and print out the ones that are actions
         for noun in os.listdir(mod_path):
             if "__" not in noun and '.pyc' not in noun:
-                print >> sys.stderr, "%s " % noun.replace('.py', ''),
-        print >> sys.stderr, ""
+                err("%s " % noun.replace('.py', ''), False)
+        err('')
 
     def parse_options(self):
         """

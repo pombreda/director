@@ -17,6 +17,8 @@ __docformat__ = 'restructuredtext'
 import exceptions
 import sys
 
+from director import err
+
 
 class Filter(list):
     """
@@ -75,8 +77,8 @@ class ExceptionFilter(object):
         """
         if type(exception) == type(self.exception('')):
             if "%s" in self.error_text:
-                print >> sys.stderr, self.error_text % exception
+                err(self.error_text % exception)
             else:
-                print >> sys.stderr, self.error_text
+                err(self.error_text)
             return True
         return False
