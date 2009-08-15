@@ -15,6 +15,7 @@ __docformat__ = 'restructuredtext'
 
 
 import exceptions
+import inspect
 import os
 import sys
 import tempfile
@@ -27,6 +28,80 @@ from director.filter import ExceptionFilter
 STDOUT = sys.stdout
 STDERR = sys.stderr
 TMP = tempfile.mkstemp()[1]
+
+
+class ErrTests(unittest.TestCase):
+    """
+    Test the err function.
+    """
+
+    def setUp(self):
+        """
+        Import err as self.err for the test.
+        """
+        import sys
+        from director import err
+        self.err = err
+        sys.stdout = open(TMP, 'w')
+        sys.stderr = open(TMP, 'w')
+
+    def tearDown(self):
+        """
+        Moves streams back to their right place.
+        """
+        sys.stdout.close()
+        sys.stdout = STDOUT
+        sys.stderr = STDERR
+
+    def test__err_spec(self):
+        """
+        Make sure the inputs to the function are what we expect.
+        """
+        spec = inspect.getargspec(self.err)
+        # Check general spec
+        self.assertEquals(spec.args, ['text', 'newline'])
+        self.assertRaises(TypeError, self.err)
+
+    def test__err_with_strings(self):
+        """
+        Test the err funtion with string input.
+        """
+        self.err('ok')
+        self.err('ok', False)
+        self.err('this is a longer string')
+        self.err('this is a longer string', False)
+        self.err(unicode('this is a unicode string'))
+        self.err(unicode('this is a unicode string'), False)
+        self.err('123123123123123')
+        self.err('123123123123123', False)
+
+    def test__err_with_numbers(self):
+        """
+        Test the err funtion with numerical input.
+        """
+        self.err(1)
+        self.err(1, False)
+        self.err(123482983748923749723984728934789237489)
+        self.err(123482983748923749723984728934789237489, False)
+        self.err(1000000*10000000)
+        self.err(1000000*10000000, False)
+        self.err(long(123123))
+        self.err(long(123123), False)
+        self.err(1e100)
+        self.err(1e100, False)
+
+    def test__err_with_objects(self):
+        """
+        Test the err funtion with object input.
+        """
+        self.err(['one', 'two', 'three'])
+        self.err(['one', 'two', 'three'])
+        self.err({'ok': 'hi', 'fine': 'there'})
+        self.err({'ok': 'hi', 'fine': 'there'})
+        self.err(object())
+        self.err(object(), False)
+        self.err(object)
+        self.err(object, False)
 
 
 class ActionTests(unittest.TestCase):
@@ -51,9 +126,10 @@ class ActionTests(unittest.TestCase):
         Tears down stuff for config test.
         """
         del self.action
-        # Map the original stdout back
+        # Map the original stdout/stderr back
         sys.stdout.close()
         sys.stdout = STDOUT
+        sys.stderr = STDERR
 
     def test__list_verbs(self):
         """
